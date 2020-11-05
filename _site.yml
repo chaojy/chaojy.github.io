@@ -10,7 +10,7 @@ navbar:
     - text: "Dashboard"
       href: dashboard.html
     - icon: fa-envelope fa-lg
-      href: mailto:<jechao@montefiore.org>
+      href: mailto:<jerry.chao@columbia.edu>
     - icon: fa-github fa-lg
       href: http://github.com/chaojy/
 output:

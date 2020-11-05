@@ -8,77 +8,122 @@ output:
 
 # Loading data
 
-We're gonna look at the NYC Airbnb data.
-
 ```{r}
 library(tidyverse)
 library(p8105.datasets)
 library(plotly)
 ```
 
-
-```{r}
-data("nyc_airbnb")
-
-nyc_airbnb =
-  nyc_airbnb %>% 
-  mutate(
-    rating = review_scores_location / 2
-  ) %>% 
-  select(neighbourhood_group, neighbourhood, rating, price, room_type, lat, long) %>% 
-  filter(
-    neighbourhood_group == "Manhattan",
-    price %in% 100:500,
-    room_type == "Entire home/apt"
-  ) %>% 
-  drop_na(rating)
-
-```
-
 # Plotly plots
 
-## scatterplot
+Using th ny_noaa dataset
+
+## Scatterplot
 
 ```{r}
-nyc_airbnb %>%
+data("ny_noaa")
+
+ny_noaa_scatter =
+ny_noaa %>% 
+  sample_n(10000) %>% 
+  separate(date, into = c("year", "month", "day")) %>% 
   mutate(
-    text_label = str_c("Price: $", price, "\nRating: ", rating)
+    year = as.integer(year),
+    month = as.integer(month),
+    day = as.integer(day),
+    tmax = as.integer(tmax),
+    tmin = as.integer(tmin),
+    prcp = prcp / 10,
+    tmax = tmax / 10,
+    tmin = tmin / 10,
+    prcp = as.integer(prcp),
+    tmax = as.integer(tmax),
+    tmin = as.integer(tmin),
+  ) %>% 
+  group_by(id, year, month) %>% 
+  summarize(
+    mean_tmax = mean(tmax, na.rm = TRUE)
+  ) %>%
+  filter(month %in% c(01, 07))
+
+ny_noaa_scatter %>% 
+  mutate(
+    text_label = str_c("Station Id: ", id, "\nYear: ", year, "\nMonth: ", month)
   ) %>% 
   plot_ly(
-    x = ~lat, y = ~long, color = ~price, text = ~text_label,
-    alpha = .5, type = "scatter", mode = "markers")
+    x = ~year, y = ~mean_tmax, text = ~text_label,
+    alpha = .5, type = "scatter", mode = "markers"
+  )
 ```
 
-## boxplot
+## Bar plot
 
 ```{r}
-nyc_airbnb %>% 
-  mutate(neighbourhood = fct_reorder(neighbourhood, price)) %>% 
-  plot_ly(y = ~price, x = ~neighbourhood, color = ~neighbourhood,
-          type = "box", colors = "viridis")
-```
-
-## bar plot
-
-```{r}
-nyc_airbnb %>% 
-  count(neighbourhood) %>% 
+ny_noaa_bar =
+ny_noaa %>% 
+  sample_n(100) %>% 
+  separate(date, into = c("year", "month", "day")) %>% 
   mutate(
-    neighbourhood = fct_reorder(neighbourhood, n)
+    year = as.integer(year),
+    month = as.integer(month),
+    day = as.integer(day),
+    tmax = as.integer(tmax),
+    tmin = as.integer(tmin),
+    prcp = prcp / 10,
+    tmax = tmax / 10,
+    tmin = tmin / 10,
+    prcp = as.integer(prcp),
+    tmax = as.integer(tmax),
+    tmin = as.integer(tmin),
+  ) %>% 
+  group_by(id, year, month) %>%  
+  summarize(
+    mean_tmax = mean(tmax, na.rm = TRUE)
+  ) %>% 
+  filter(mean_tmax != "NaN")
+## how to get rid of duplicates  
+
+ny_noaa_bar %>%
+  filter(mean_tmax > 20) %>% 
+  arrange(mean_tmax) %>% 
+  plot_ly(
+    x = ~year, y = ~mean_tmax,
+    type = "bar"
+  )
+```
+
+## Box plot
+
+```{r}
+ny_noaa_box =
+ny_noaa %>% 
+  sample_n(100) %>% 
+  separate(date, into = c("year", "month", "day")) %>% 
+  mutate(
+    year = as.integer(year),
+    month = as.integer(month),
+    day = as.integer(day),
+    tmax = as.integer(tmax),
+    tmin = as.integer(tmin),
+    prcp = prcp / 10,
+    tmax = tmax / 10,
+    tmin = tmin / 10,
+    prcp = as.integer(prcp),
+    tmax = as.integer(tmax),
+    tmin = as.integer(tmin),
+  ) %>% 
+  group_by(id, year, month) 
+
+ny_noaa_box %>% 
+  filter(tmax != "NA") %>%
+  arrange(tmax) %>%
+  count(tmax) %>% 
+  mutate(
+    tmax = as.factor(tmax),
+    tmax = fct_relevel(tmax)
   ) %>% 
   plot_ly(
-    x = ~neighbourhood, y = ~n, color = ~neighbourhood, 
-    type = "bar", colors = "viridis") 
+    y = ~tmax, x = ~id, color = ~id,
+    type = "histogram", colors = "viridis"
+  )
 ```
-
-## ggplotly
-
-```{r}
-ggp_scatter =
-nyc_airbnb %>% 
-  ggplot(aes(x = lat, y = long, color = price)) +
-  geom_point()
-
-ggplotly(ggp_scatter)
-```
-
