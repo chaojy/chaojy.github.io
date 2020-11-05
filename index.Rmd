@@ -11,7 +11,9 @@ output:
 
 Welcome to my website.  I am a pediatric anesthesiologist and clinical researcher at Albert Einstein College of Medicine, Montefiore Medical Center studying the neuroscience of early anesthesia.
 
-<img src="images/chao_portrait.jpeg" style="width:35%">
+<img src="images/olive_funny_face_portrait.jpeg" style="width:35%">
+
+<img src="images/olive_daddy_backpack.png" style="width:35%">
 
 # A new addition to our family
 
@@ -33,7 +35,7 @@ That look on Marigold's face!
 
 ## Our furry menagerie
 
-Violet further displaces our pets: Hanky (our black lab/setter mix rescue, 5-and-a-half years old) and Benny (our black cat rescure, 2 years old).  When we adopted Benny when he was a kitten, he immediately bonded with Hanky.  We think Hanky was imprinted on Benny, who treats Hanky as a big brother in his pack.  We call Benny our cat-dog because he behaves more like a dog that a cat!  They are best buddies.
+Violet further displaces our pets: Hanky (our black lab/setter mix rescue, 5-and-a-half years old) and Benny (our black cat rescure, 2 years old).  When we adopted Benny when he was a kitten, he immediately bonded with Hanky.  We think Hanky was imprinted on Benny, who treats Hanky as a big brother in his pack.  We call Benny our cat-dog because he behaves more like a dog that a cat!  He even comes out on walks with us - off leash!  They are best buddies.
 
 <img src="images/hanky_benny.jpg" style="width:35%">
 
@@ -45,10 +47,13 @@ Posey is our golden retriever and chow chow mix rescue, also around 5-and-a-half
 
 Here are some links to other websites about me:
 
+* [GitHub account](https://github.com/chaojy/chaojy.github.io)
 * [Montefiore faculty page](https://www.montefiore.org/body.cfm?id=4148&action=detail&ref=3900)
 * [Children's Hospital faculty page](https://www.cham.org/patients-families/find-a-doctor/jerry-y-chao-md-11118634)
+* [Albert Einstein faculty page](https://www.einstein.yu.edu/faculty/13000/jerry-chao/)
 * [Elsevier Pure](https://einstein.pure.elsevier.com/en/persons/jerry-y-chao)
 * [twitter](https://twitter.com/JerryChaoMD)
+* [LinkedIn](https://www.linkedin.com/in/jerry-y-chao-3852b84)
 
 # Link to page within the site
 

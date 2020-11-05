@@ -10,9 +10,9 @@ navbar:
     - text: "Dashboard"
       href: dashboard.html
     - icon: fa-envelope fa-lg
-      href: mailto:<jerry.chao@columbia.edu>
+      href: mailto:<jyc2171@columbia.edu>
     - icon: fa-github fa-lg
-      href: http://github.com/chaojy/
+      href: https://github.com/chaojy/chaojy.github.io
 output:
   html_document:
     theme: cerulean
