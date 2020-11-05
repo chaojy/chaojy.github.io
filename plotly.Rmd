@@ -16,7 +16,7 @@ library(plotly)
 
 # Plotly plots
 
-Using th ny_noaa dataset
+Using the ny_noaa dataset
 
 ## Scatterplot
 
@@ -51,7 +51,7 @@ ny_noaa_scatter %>%
     text_label = str_c("Station Id: ", id, "\nYear: ", year, "\nMonth: ", month)
   ) %>% 
   plot_ly(
-    x = ~year, y = ~mean_tmax, text = ~text_label,
+    x = ~year, y = ~mean_tmax, text = ~text_label, color = ~month,
     alpha = .5, type = "scatter", mode = "markers"
   )
 ```
@@ -61,7 +61,7 @@ ny_noaa_scatter %>%
 ```{r}
 ny_noaa_bar =
 ny_noaa %>% 
-  sample_n(100) %>% 
+  sample_n(10000) %>% 
   separate(date, into = c("year", "month", "day")) %>% 
   mutate(
     year = as.integer(year),
@@ -76,19 +76,18 @@ ny_noaa %>%
     tmax = as.integer(tmax),
     tmin = as.integer(tmin),
   ) %>% 
-  group_by(id, year, month) %>%  
+  group_by(year, month) %>%
+  arrange(year) %>% 
   summarize(
     mean_tmax = mean(tmax, na.rm = TRUE)
   ) %>% 
   filter(mean_tmax != "NaN")
-## how to get rid of duplicates  
 
 ny_noaa_bar %>%
-  filter(mean_tmax > 20) %>% 
-  arrange(mean_tmax) %>% 
+  filter(month %in% c(07)) %>% 
   plot_ly(
-    x = ~year, y = ~mean_tmax,
-    type = "bar"
+    x = ~year, y = ~mean_tmax, color = ~mean_tmax,
+    alpha = .6, type = "bar"
   )
 ```
 
@@ -97,7 +96,7 @@ ny_noaa_bar %>%
 ```{r}
 ny_noaa_box =
 ny_noaa %>% 
-  sample_n(100) %>% 
+  sample_n(10000) %>% 
   separate(date, into = c("year", "month", "day")) %>% 
   mutate(
     year = as.integer(year),
@@ -117,13 +116,8 @@ ny_noaa %>%
 ny_noaa_box %>% 
   filter(tmax != "NA") %>%
   arrange(tmax) %>%
-  count(tmax) %>% 
-  mutate(
-    tmax = as.factor(tmax),
-    tmax = fct_relevel(tmax)
-  ) %>% 
   plot_ly(
-    y = ~tmax, x = ~id, color = ~id,
-    type = "histogram", colors = "viridis"
+    y = ~tmax, x = ~year,
+    type = "box"
   )
 ```

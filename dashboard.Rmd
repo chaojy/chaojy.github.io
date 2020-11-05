@@ -45,7 +45,7 @@ ny_noaa %>%
 
 ny_noaa_bar =
 ny_noaa %>% 
-  sample_n(100) %>% 
+  sample_n(10000) %>% 
   separate(date, into = c("year", "month", "day")) %>% 
   mutate(
     year = as.integer(year),
@@ -60,14 +60,16 @@ ny_noaa %>%
     tmax = as.integer(tmax),
     tmin = as.integer(tmin),
   ) %>% 
-  group_by(id, year, month) %>%  
+  group_by(year, month) %>%
+  arrange(year) %>% 
   summarize(
     mean_tmax = mean(tmax, na.rm = TRUE)
-  )
+  ) %>% 
+  filter(mean_tmax != "NaN")
 
 ny_noaa_box =
 ny_noaa %>% 
-  sample_n(100) %>% 
+  sample_n(10000) %>% 
   separate(date, into = c("year", "month", "day")) %>% 
   mutate(
     year = as.integer(year),
@@ -96,7 +98,7 @@ ny_noaa_scatter %>%
     text_label = str_c("Station Id: ", id, "\nYear: ", year, "\nMonth: ", month)
   ) %>% 
   plot_ly(
-    x = ~year, y = ~mean_tmax, text = ~text_label,
+    x = ~year, y = ~mean_tmax, text = ~text_label, color = ~month,
     alpha = .5, type = "scatter", mode = "markers"
   )
 ```
@@ -108,14 +110,11 @@ Column {data-width=650}
 
 ```{r}
 ny_noaa_box %>% 
-  filter(tmax != "NA") %>% 
-  mutate(
-    tmax = as.factor(tmax),
-    tmax = fct_relevel(tmax)
-  ) %>% 
+  filter(tmax != "NA") %>%
+  arrange(tmax) %>%
   plot_ly(
-    y = ~tmax, x = ~id, color = ~id,
-    type = "box", colors = "viridis"
+    y = ~tmax, x = ~year,
+    type = "box"
   )
 ```
 
@@ -123,15 +122,10 @@ ny_noaa_box %>%
 
 ```{r}
 ny_noaa_bar %>%
-  filter(mean_tmax > 20) %>%
-  count(mean_tmax) %>% 
-  mutate(
-    mean_tmax = as.factor(mean_tmax),
-    mean_tmax = fct_reorder(mean_tmax, n)
-  ) %>% 
+  filter(month %in% c(07)) %>% 
   plot_ly(
-    x = ~mean_tmax, y = ~n, color = ~id,
-    type = "bar", colors = "viridis"
+    x = ~year, y = ~mean_tmax, color = ~mean_tmax,
+    alpha = .6, type = "bar"
   )
 ```
 
